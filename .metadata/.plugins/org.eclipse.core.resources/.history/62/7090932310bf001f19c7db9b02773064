@@ -55,12 +55,12 @@ public class EcommerceMain {
                             boolean isUser = loginService.isUser(loginModel);
 
                             if (isUser) {
-                                System.out.println("Login successful");
+                                System.out.println("Login successful.");
                                 // Check if the user is an admin or regular user
                                 if ("admin".equalsIgnoreCase(loginModel.getUsertype())) {
-                                    System.out.println("Welcome  admin! You have full access ");
+                                    System.out.println("Welcome, Admin! You have full access.");
                                     // Admin options for product category management
-                                    System.out.println("Would you like to add a new product category  ?");
+                                    System.out.println("Would you like to add a new product category?");
                                     System.out.println("1. Yes");
                                     System.out.println("2. No");
                                     System.out.print("Enter your choice: ");
@@ -75,16 +75,16 @@ public class EcommerceMain {
                                         // Call the service method to add the category
                                         boolean categoryAdded = productCatService.addProductCat(productCatModel);
                                         if (categoryAdded) {
-                                            System.out.println("Product category \"" + newCategory + "\" has been added successfully ");
+                                            System.out.println("Product category \"" + newCategory + "\" has been added successfully.");
                                         } else {
-                                            System.out.println("Failed to add product category ");
+                                            System.out.println("Failed to add product category.");
                                         }
                                     }
                                 } else {
-                                    System.out.println("Welcome" + loginModel.getUname() + "  You have limited access ");
+                                    System.out.println("Welcome, " + loginModel.getUname() + "! You have limited access.");
                                 }
                             } else {
-                                System.out.println("Invalid information ");
+                                System.out.println("Invalid credentials. Please try again.");
                             }
                             break;
 
@@ -168,14 +168,14 @@ public class EcommerceMain {
                     break;
 
                 case 4:
-                  
+                    // Exit the application
                     System.out.println("Exiting the application...");
                     value = false;
                     break;
 
                 default:
-                    
-                    System.out.println("Invalid choice...");
+                    // Invalid input
+                    System.out.println("Invalid choice. Please select a valid option.");
             }
         }
 

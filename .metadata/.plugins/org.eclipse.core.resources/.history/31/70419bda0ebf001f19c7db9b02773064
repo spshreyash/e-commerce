@@ -55,12 +55,12 @@ public class EcommerceMain {
                             boolean isUser = loginService.isUser(loginModel);
 
                             if (isUser) {
-                                System.out.println("Login successful");
+                                System.out.println("Login successful.");
                                 // Check if the user is an admin or regular user
                                 if ("admin".equalsIgnoreCase(loginModel.getUsertype())) {
-                                    System.out.println("Welcome  admin! You have full access ");
+                                    System.out.println("Welcome, Admin! You have full access.");
                                     // Admin options for product category management
-                                    System.out.println("Would you like to add a new product category  ?");
+                                    System.out.println("Would you like to add a new product category?");
                                     System.out.println("1. Yes");
                                     System.out.println("2. No");
                                     System.out.print("Enter your choice: ");
@@ -75,41 +75,35 @@ public class EcommerceMain {
                                         // Call the service method to add the category
                                         boolean categoryAdded = productCatService.addProductCat(productCatModel);
                                         if (categoryAdded) {
-                                            System.out.println("Product category \"" + newCategory + "\" has been added successfully ");
+                                            System.out.println("Product category \"" + newCategory + "\" has been added successfully.");
                                         } else {
-                                            System.out.println("Failed to add product category ");
+                                            System.out.println("Failed to add product category.");
                                         }
                                     }
                                 } else {
-                                    System.out.println("Welcome" + loginModel.getUname() + "  You have limited access ");
+                                    System.out.println("Welcome, " + loginModel.getUname() + "! You have limited access.");
                                 }
                             } else {
-                                System.out.println("Invalid information ");
+                                System.out.println("Invalid credentials. Please try again.");
                             }
                             break;
 
                         case 2:
                             // Registration functionality
                             System.out.print("Enter your name: ");
-                            String name = sc.next();  
+                            String name = sc.next();  // User input for name
                             System.out.print("Enter your email: ");
-                            String regEmail = sc.next();  
+                            String regEmail = sc.next();  // User input for email
                             System.out.print("Enter your password: ");
-                            String regPassword = sc.next();  
+                            String regPassword = sc.next();  // User input for password
 
-                            // Ask the user what ur  usertype
+                            // Ask the user to choose their usertype
                             System.out.println("Please choose your usertype:");
                             System.out.println("1. Admin");
                             System.out.println("2. User");
                             System.out.print("Enter choice: ");
                             int usertypeChoice = sc.nextInt();
-                           String usertype; 
-                            if (usertypeChoice == 1) {
-                                usertype = "admin";
-                            } else {
-                                usertype = "user";  
-                                // Default evry tm user
-                            }
+                            String usertype = (usertypeChoice == 1) ? "admin" : "user"; // Default to "user" if not "admin"
 
                             // Set the values into the loginModel for registration
                             loginModel.setUname(name);
@@ -127,7 +121,7 @@ public class EcommerceMain {
                             break;
 
                         default:
-                            
+                            // Invalid action choice
                             System.out.println("Invalid choice. Please select a valid option.");
                     }
                     break;
@@ -135,10 +129,9 @@ public class EcommerceMain {
                 case 2:
                     // Check if product category is available
                     System.out.print("Enter product category name to check availability: ");
-                    String categoryName = sc.next();  
-                    
+                    String categoryName = sc.next();  // User input for category name
 
-                    // here we set the prcat name 
+                    // Create a ProductCatModel with the category name
                     productCatModel.setName(categoryName);
 
                     // Check if the category is available using the service
@@ -160,25 +153,23 @@ public class EcommerceMain {
                     } else {
                         System.out.println("All product categories:");
                         for (ProductCatModel category : allCategories) {
-                        	
-                        	// Displ    every category name
-                            System.out.println(category.getName());  
+                            System.out.println(category.getName());  // Display each category name
                         }
                     }
                     break;
 
                 case 4:
-                  
+                    // Exit the application
                     System.out.println("Exiting the application...");
                     value = false;
                     break;
 
                 default:
-                    
-                    System.out.println("Invalid choice...");
+                    // Invalid input
+                    System.out.println("Invalid choice. Please select a valid option.");
             }
         }
 
-        
+        sc.close();  // Close scanner resource
     }
 }

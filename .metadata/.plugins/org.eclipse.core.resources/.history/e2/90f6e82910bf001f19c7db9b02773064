@@ -168,13 +168,13 @@ public class EcommerceMain {
                     break;
 
                 case 4:
-                  
+                    // Exit the application
                     System.out.println("Exiting the application...");
                     value = false;
                     break;
 
                 default:
-                    
+                    // Invalid input
                     System.out.println("Invalid choice...");
             }
         }

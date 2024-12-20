@@ -23,17 +23,13 @@ import java.util.List;
         	// Query to check the category name and stuff 
             String query = "select  * from productcategories where name = ?";  
             try {
-                
+                // Prepare the statement with the query
                 stmt = conn.prepareStatement(query);
 
-                // Set the query para/
+                // Set the parameter for the query (category name)
                 stmt.setString(1, procat.getName());
 
-                
-                
-                
-                
-                
+                // Execute the query
                 rs = stmt.executeQuery();
 
                 // If the result set contains data, return true (category exists)
@@ -41,7 +37,7 @@ import java.util.List;
 
             } catch (SQLException ex) {
                 System.out.println("Error in isProductCat: " + ex.getMessage());
-                return false; 
+                return false;  // Return false if there's an error or category doesn't exist
             }
         }
 
@@ -55,25 +51,23 @@ import java.util.List;
                 while (rs.next()) {
                     ProductCatModel category = new ProductCatModel();
                     category.setName(rs.getString("name"));
-                    
-                    // here we add product cat list in list ok met
+                    // You can add more attributes to the ProductCatModel if needed
                     categories.add(category);
                 }
             } catch (SQLException ex) {
-                System.out.println("error in product catageries : " + ex.getMessage());
+                System.out.println("Error in getAllProductCats: " + ex.getMessage());
             }
             return categories;
  }
         
         public boolean addProductCat(ProductCatModel procat) {
-        	//   only add  new category
-            String query = "insert into  productcategories (name) values  (?)";  
+            String query = "insert into  productcategories (name) values  (?)";  // SQL to add a new category
             try {
                 stmt = conn.prepareStatement(query);
                 stmt.setString(1, procat.getName());  // Set the category name
-                int values = stmt.executeUpdate();
+                int rowsAffected = stmt.executeUpdate();
 
-                return values > 0;  // Return true if the category is added successfully
+                return rowsAffected > 0;  // Return true if the category is added successfully
             } catch (SQLException ex) {
                 System.out.println("Error in addProductCat: " + ex.getMessage());
                 return false;  // Return false if there's an error

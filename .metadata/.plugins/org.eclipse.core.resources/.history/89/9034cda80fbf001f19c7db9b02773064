@@ -7,7 +7,7 @@ public interface ProductCatRepo {
 
 	 boolean isProductCat(ProductCatModel procat);
 	
-
+//	 List<ProductCatModel> getAllProductCategories();  // Method to get all categories
 	    List<ProductCatModel> getAllProductCats();
 	    
 	    boolean addProductCat(ProductCatModel procat); 
