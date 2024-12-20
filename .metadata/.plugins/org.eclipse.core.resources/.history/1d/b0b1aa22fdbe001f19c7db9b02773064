@@ -1,0 +1,82 @@
+package org.project.clientApp;
+
+import java.util.Scanner;
+import org.project.models.LoginModel;
+import org.project.services.LoginService;
+import org.project.services.LoginServiceImp;
+import org.project.models.ProductCatModel;
+import org.project.services.ProductCatService;
+import org.project.services.ProductCatServiceImpl;
+import java.util.List;
+
+public class EcommerceMain {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);  // Scanner for input
+        LoginService loginService = new LoginServiceImp(); // Using the interface type for dynamic polymorphism
+        LoginModel loginModel = new LoginModel();
+        ProductCatService productCatService = new ProductCatServiceImpl(); // ProductCatService for category functionality
+        boolean running = true;
+
+        while (running) {
+            System.out.println("Please choose an option:");
+            System.out.println("1. Login");
+            System.out.println("2. Check Product Category Availability");
+            System.out.println("3. Show All Product Categories");  // New option to show all categories
+            System.out.println("4. Exit");
+            System.out.print("Enter choice: ");
+            int choice = sc.nextInt();  // Get user choice
+            
+            switch (choice) {
+                case 1:
+                    // Login or registration functionality remains unchanged
+                    break;
+
+                case 2:
+                    // Check if product category is available
+                    System.out.print("Enter product category name to check availability: ");
+                    String categoryName = sc.next();  // User input for category name
+                    
+                    // Create a ProductCatModel with the category name
+                    ProductCatModel productCatModel = new ProductCatModel();
+                    productCatModel.setName(categoryName);
+                    
+                    // Check if the category is available using the service
+                    boolean isCategoryAvailable = productCatService.isProductCat(productCatModel);
+                    
+                    if (isCategoryAvailable) {
+                        System.out.println("The product category \"" + categoryName + "\" is available.");
+                    } else {
+                        System.out.println("The product category \"" + categoryName + "\" is not available.");
+                    }
+                    break;
+
+                case 3:
+                    // Show all product categories
+                    List<ProductCatModel> allCategories = productCatService.getAllProductCats();
+                    
+                    if (allCategories.isEmpty()) {
+                        System.out.println("No product categories available.");
+                    } else {
+                        System.out.println("All available product categories:");
+                        for (ProductCatModel category : allCategories) {
+                            System.out.println("- " + category.getName());  // Display each category name
+                        }
+                    }
+                    break;
+
+                case 4:
+                    // Exit the application
+                    System.out.println("Exiting the application...");
+                    running = false;
+                    break;
+
+                default:
+                    // Invalid input
+                    System.out.println("Invalid choice. Please select a valid option.");
+            }
+        }
+
+        sc.close();  // Close scanner resource
+    }
+}

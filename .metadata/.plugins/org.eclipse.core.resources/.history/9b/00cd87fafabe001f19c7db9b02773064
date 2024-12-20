@@ -1,0 +1,8 @@
+package org.project.services;
+
+import org.project.models.ProductCatModel;
+
+public interface ProductCatService {
+
+	 boolean isProductCat(ProductCatModel procat);
+}

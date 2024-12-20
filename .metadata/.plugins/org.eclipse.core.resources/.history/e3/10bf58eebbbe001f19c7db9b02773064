@@ -1,0 +1,8 @@
+package org.project.repo;
+
+public class LoginRepoImpl  extends DBState {
+//	DbConfig config=DbConfig.getInstance();  every repo jus create the object of  sigle tone class 
+	// but we have another way like inheritance so extends DbCongig class but we have do insted of privaate constructo to protected then we extend 
+
+	
+}

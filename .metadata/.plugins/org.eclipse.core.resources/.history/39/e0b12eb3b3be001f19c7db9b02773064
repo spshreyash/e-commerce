@@ -1,0 +1,33 @@
+package org.project.repo;
+import java.io.File;
+import java.sql.*;
+
+public class DbConfig {
+
+	protected Connection conn;
+	protected PreparedStatement stmt;
+	protected  ResultSet rs;
+	private static DbConfig db;
+	// atomatic call parent constrctor 
+	private DbConfig()
+	{
+		
+		try
+		{
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			 File  f=new File(".");
+			 String path=f.getAbsolutePath();
+			 
+			 System.out.println(path+"\\src\\main\\resources\\application.properties");
+//			conn=DriverManager.getConnection("")
+		}
+		catch(Exception ex)
+		{
+			System.out.println("error is "+ex);
+		}
+	}
+	public static void main(String []args)
+	{
+		new DbConfig();
+	}
+}

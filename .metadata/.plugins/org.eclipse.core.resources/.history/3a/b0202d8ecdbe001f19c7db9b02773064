@@ -1,0 +1,62 @@
+package org.project.repo;
+
+import java.sql.*;
+import org.project.models.LoginModel;
+
+
+
+package org.project.repo;
+
+import java.sql.*;
+import org.project.models.LoginModel;
+
+public class LoginRepoImpl extends DBState implements LoginRepo {
+
+    @Override
+    public boolean isUser(LoginModel login) {
+        String query = "SELECT * FROM users WHERE uemail = ? AND password = ?";
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            // Create PreparedStatement and set parameters
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, login.getUemail());
+            stmt.setString(2, login.getPassword());
+
+            // Execute the query and store the result
+            rs = stmt.executeQuery();
+
+            // If any result exists, return true (user found)
+            return rs.next();
+
+        } catch (SQLException ex) {
+            System.out.println("Error in isUser: " + ex.getMessage());
+            return false;
+        } finally {
+            // Close resources
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+    }
+
+}
+
+
+
+
+//	@Override
+//	public boolean registerUser(LoginModel login) {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//	
+}

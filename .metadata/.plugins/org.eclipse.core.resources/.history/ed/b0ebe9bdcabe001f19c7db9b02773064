@@ -1,0 +1,78 @@
+package org.project.repo;
+
+import java.sql.*;
+import org.project.models.LoginModel;
+
+//class 
+//public class LoginRepoImpl  extends DBState {
+////	DbConfig config=DbConfig.getInstance();  every repo jus create the object of  sigle tone class 
+//	// but we have another way like inheritance so extends DbCongig class but we have do insted of privaate constructo to protected then we extend 
+//
+//	
+//}
+
+
+//public class LoginRepoImpl extends DBState implements LoginRepo
+//{
+//
+//	@Override
+//	public boolean isUser(LoginModel login) {
+//		// TODO Auto-generated method stub
+//		
+//		try {
+//			stmt=conn.prepareStatement("SELECT password FROM users WHERE uemail = ?");
+//			 stmt.setString(1, login.getUemail());		
+//			 int value=stmt.executeQuery();
+//			 return value>0?true:false;
+//			 
+//		}
+//		catch(Exception ex)
+//		{
+//			System.out.println("Eerror is "+ex);
+//			return false;
+//		}
+//	
+//	}
+
+
+
+
+
+
+
+
+public class LoginRepoImpl extends DBState implements LoginRepo {
+
+    @Override
+    public boolean isUser(LoginModel login) {
+        String query = "SELECT * FROM users WHERE uemail = ? AND password = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            // Set the parameters
+            stmt.setString(1, login.getUemail());
+            stmt.setString(2, login.getPassword());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                // Check if any result is returned
+                return rs.next(); // If result exists, return true
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error in isUser: " + ex.getMessage());
+            return false;
+        }
+    }
+}
+
+
+
+
+
+
+
+//	@Override
+//	public boolean registerUser(LoginModel login) {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//	
+	
+}

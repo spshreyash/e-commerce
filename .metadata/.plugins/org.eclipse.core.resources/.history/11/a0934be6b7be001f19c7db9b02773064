@@ -1,0 +1,49 @@
+package org.project.repo;
+import java.io.*;
+import java.sql.*;
+import java.util.*;
+
+public class DbConfig {
+
+	protected Connection conn;
+	protected PreparedStatement stmt;
+	protected  ResultSet rs;
+	private static DbConfig db;
+	// atomatic call parent constrctor 
+	private DbConfig()
+	{
+		
+		try
+ 		{
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			 File  f=new File("");
+			 String path=f.getAbsolutePath();
+			 FileInputStream inputStream = new FileInputStream(path+"\\src\\main\\resources\\application.properties");
+           
+			  Properties p  = new Properties();
+			  p.load(inputStream);
+//			 System.out.println(path);
+
+			  
+			  
+			  String driverClasName=p.getProperty("Driver");
+			  String username=p.getProperty("username");
+			  String pass=p.getProperty("password");
+			  String url=p.getProperty("url");
+			  
+//			 System.out.println(driverClasName);
+//			 System.out.println(username);
+//			 System.out.println(pass);
+//			 System.out.println(url);
+			  
+			  
+			  Connection conn=DriverManager.getConnection(url,username,pass);
+			  
+		}
+		catch(Exception ex)
+		{
+			System.out.println("error is "+ex);
+		}
+	}
+	
+}

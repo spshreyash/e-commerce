@@ -1,0 +1,16 @@
+package org.project.services;
+
+import org.project.models.LoginModel;
+import org.project.repo.LoginRepo;
+import org.project.repo.LoginRepoImpl;
+
+public class LoginServiceImp implements LoginService {
+
+	LoginRepo logrepo= new LoginRepoImpl();
+	@Override
+	public boolean isUser(LoginModel login) {
+		// TODO Auto-generated method stub
+		return logrepo.isUser(login) ;
+	}
+
+}

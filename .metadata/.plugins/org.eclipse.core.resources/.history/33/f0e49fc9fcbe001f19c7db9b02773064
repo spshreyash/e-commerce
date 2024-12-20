@@ -1,0 +1,27 @@
+
+
+
+package org.project.services;
+
+import java.util.List;
+
+import org.project.models.ProductCatModel;
+import org.project.repo.ProductCatRepo;
+import org.project.repo.ProductCatRepoImpl;
+
+public class ProductCatServiceImpl implements ProductCatService {
+
+    // Declare the repository instance
+    ProductCatRepo productrepo = new ProductCatRepoImpl();
+
+    @Override
+    public boolean isProductCat(ProductCatModel procat) {
+        // Call the repository method to check if the product category exists
+        return productrepo.isProductCat(procat); 
+    }
+    
+    
+    public List<ProductCatModel> getAllProductCategories() {
+        return productrepo.getAllProductCategories();  // Fetch all categories from the repository
+    }
+}

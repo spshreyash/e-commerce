@@ -1,0 +1,62 @@
+package org.project.clientApp;
+
+
+
+import java.util.Scanner;
+import org.project.models.LoginModel;
+import org.project.services.LoginService;
+import org.project.services.LoginServiceImp;
+
+public class EcommerceMain {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);  // Scanner for input
+        LoginService loginService = new LoginServiceImp(); // Using the interface type for dynamic polymorphism
+        LoginModel loginModel = new LoginModel();
+        boolean running = true;
+
+        while (running) {
+    
+            System.out.println("Please choose an option:");
+            System.out.println("1. Login");
+            System.out.println("2. Exit");
+            System.out.print("Enter choice: ");
+            int choice = sc.nextInt();  // Get user choice
+            
+            switch (choice) {
+                case 1:
+               
+                    System.out.print("Enter email: ");
+                    String email = sc.next();  // User input for email
+
+                    System.out.print("Enter password: ");
+                    String password = sc.next();  // User input for password
+
+                    // Set the user inputs into the LoginModel
+                    loginModel.setUemail(email);
+                    loginModel.setPassword(password);
+
+                    // Check if user exists using the service method
+                    boolean isUser = loginService.isUser(loginModel);
+                    if (isUser) {
+                        System.out.println("Login successful.");
+                    } else {
+                        System.out.println("Invalid credentials. Please try again.");
+                    }
+                    break;
+
+                case 2:
+                    // Exit the application
+                    System.out.println("Exiting the application...");
+                    running = false;
+                    break;
+
+                default:
+                    // Invalid input
+                    System.out.println("Invalid choice. Please select a valid option.");
+            }
+        }
+        
+        sc.close();  // Close scanner resource
+    }
+}

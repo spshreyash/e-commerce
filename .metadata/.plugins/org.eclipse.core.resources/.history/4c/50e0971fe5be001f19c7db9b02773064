@@ -1,0 +1,10 @@
+package org.project.repo;
+
+import org.project.models.ProductCatModel;
+
+public interface ProductCatRepo {
+	
+
+	boolean isProducrCat(ProductCatModel procat);
+
+}

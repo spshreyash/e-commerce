@@ -1,0 +1,11 @@
+package org.project.repo;
+
+import java.sql.*;
+public class DBState {
+
+	DbConfig config=DbConfig.getInstance();
+	
+      protected Connection conn=config.getConn();
+
+
+}

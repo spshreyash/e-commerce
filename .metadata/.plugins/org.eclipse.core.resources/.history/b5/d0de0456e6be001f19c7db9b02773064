@@ -1,0 +1,15 @@
+package org.project.services;
+
+import org.project.models.ProductCatModel;
+
+public class ProductCatServiceImpl implements ProductCatService {
+	ProductCatRepo productrepo=new ProductCatRepoImpl();
+
+	@Override
+	 public boolean isProductCat(ProductCatModel procat) {
+        // Call the repository method to check if the product category exists
+        return productrepo.isProductCat(procat); 
+    }
+	
+
+}

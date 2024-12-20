@@ -1,0 +1,36 @@
+package org.project.repo;
+
+import java.sql.*;
+import org.project.models.LoginModel;
+
+
+
+public class LoginRepoImpl extends DBState implements LoginRepo {
+
+    @Override
+    public boolean isUser(LoginModel login) {
+        String query = "SELECT * FROM users WHERE uemail = ? AND password = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            // Set the parameters
+            stmt.setString(1, login.getUemail());
+            stmt.setString(2, login.getPassword());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                // Check if any result is returned
+                return rs.next(); // If result exists, return true
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error in isUser: " + ex.getMessage());
+            return false;
+        }
+    }
+
+
+
+//	@Override
+//	public boolean registerUser(LoginModel login) {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//	
+}

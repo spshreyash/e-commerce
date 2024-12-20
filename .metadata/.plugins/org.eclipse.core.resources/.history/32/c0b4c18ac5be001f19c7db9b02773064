@@ -1,0 +1,17 @@
+package org.project.services;
+
+import org.project.models.LoginModel;
+import org.project.repo.LoginRepo;
+import org.project.repo.LoginRepoImpl;
+
+public class LoginServiceImp implements LoginService {
+
+	@Override
+	public boolean isUser(LoginModel login) {
+		LoginRepo loRepo=new LoginRepoImpl();
+		
+		return false;
+	}
+
+	 
+}

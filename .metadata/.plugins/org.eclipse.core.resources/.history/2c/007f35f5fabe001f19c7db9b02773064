@@ -1,0 +1,81 @@
+//
+//
+//
+//package org.project.repo;
+//
+//import org.project.models.ProductCatModel;
+//import java.sql.*;
+//
+//public class ProductCatRepoImpl extends DBState implements ProductCatRepo {
+//
+//    @Override
+//    public boolean isProductCat(ProductCatModel procat) {
+//        String query = "select  * from  productcategories where name = ?";
+//
+//        try {
+//            // Prepare the statement with the query
+//            stmt = conn.prepareStatement(query);
+//
+//            // Set the parameter for the query (category name)
+//            stmt.setString(1, procat.getName());
+//
+//            // Execute the query
+//            rs = stmt.executeQuery();
+//
+//            // If the result set contains data, return true (category exists)
+//            return rs.next(); 
+//
+//        } catch (SQLException ex) {
+//            System.out.println("Error in isProductCat: " + ex.getMessage());
+//            return false; // Return false if there's an error or category doesn't exist
+//        }
+//    }
+//}
+
+
+
+package org.project.repo;
+
+import org.project.models.ProductCatModel;
+import java.sql.*;
+
+public class ProductCatRepoImpl extends DBState implements ProductCatRepo {
+
+    @Override
+    public boolean isProductCat(ProductCatModel procat) {
+        String query = "SELECT * FROM productcategories LIMIT 1";  // Simple query to check if any category exists
+
+        try {
+            stmt = conn.prepareStatement(query);
+            rs = stmt.executeQuery();
+
+            // If any record is returned, then categories exist
+            return rs.next(); 
+
+        } catch (SQLException ex) {
+            System.out.println("Error in isProductCat: " + ex.getMessage());
+            return false;  // Return false if there's an error or no categories exist
+        }
+    }
+
+
+public List<ProductCatModel> getAllProductCategories() {
+    List<ProductCatModel> categories = new ArrayList<>();
+    String query = "SELECT * FROM productcategories";  // Get all product categories
+
+    try {
+        stmt = conn.prepareStatement(query);
+        rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            ProductCatModel category = new ProductCatModel();
+            category.setCid(rs.getInt("cid"));
+            category.setName(rs.getString("name"));
+            categories.add(category);
+        }
+    } catch (SQLException ex) {
+        System.out.println("Error in getAllProductCategories: " + ex.getMessage());
+    }
+    return categories;
+}
+}

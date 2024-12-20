@@ -1,0 +1,15 @@
+package org.project.repo;
+import java.sql.*;
+
+import org.project.models.ProductCatModel;
+
+
+public class ProductCatRepoImpl  extends DBState implements ProductCatRepo {
+
+	@Override
+	public boolean isProducrCat(ProductCatModel procat) {
+	  
+		return false;
+	}
+
+}
