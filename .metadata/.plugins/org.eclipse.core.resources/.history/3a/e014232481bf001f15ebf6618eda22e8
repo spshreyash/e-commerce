@@ -1,0 +1,19 @@
+package org.project.services;
+
+import java.util.List;
+import org.project.models.ProductsModel;
+
+public interface ProductService {
+
+    // Method to create or update a product
+    void saveOrUpdateProduct(ProductsModel product);
+
+    // Method to delete a product
+    void deleteProduct(int pid);
+
+    // Method to get all products
+    List<ProductsModel> getAllProducts();
+
+    // Method to get a product by ID
+    ProductsModel getProductById(int pid);
+}

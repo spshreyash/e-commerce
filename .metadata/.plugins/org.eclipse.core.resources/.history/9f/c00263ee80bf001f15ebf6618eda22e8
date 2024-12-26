@@ -1,0 +1,120 @@
+package org.project.repo;
+
+import org.project.models.ProductsModel;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductsRepoImpl extends DBState implements ProductsRepo {
+
+    // Method to create or update a product
+	 public void saveOrUpdateProduct(ProductsModel product) {
+	        // Check if product exists based on its PID
+	        String selectQuery = "SELECT * FROM products WHERE pid = ?";
+	        
+	        try {
+	            stmt = conn.prepareStatement(selectQuery);
+	            stmt.setInt(1, product.getPid());
+	            ResultSet rs = stmt.executeQuery();
+
+	            if (rs.next()) {
+	                // Product exists, so perform UPDATE
+	                String updateQuery = "UPDATE products SET name = ?, price = ?, quantity = ?, cid = ? WHERE pid = ?";
+	                stmt = conn.prepareStatement(updateQuery);
+	                stmt.setString(1, product.getName());
+	                stmt.setInt(2, product.getPrice());
+	                stmt.setInt(3, product.getQuantity());
+	                stmt.setInt(4, product.getCid());
+	                stmt.setInt(5, product.getPid());
+	                stmt.executeUpdate();
+	            } else {
+	                // Product does not exist, so perform INSERT
+	                String insertQuery = "INSERT INTO products (name, price, quantity, cid) VALUES (?, ?, ?, ?)";
+	                stmt = conn.prepareStatement(insertQuery);
+	                stmt.setString(1, product.getName());
+	                stmt.setInt(2, product.getPrice());
+	                stmt.setInt(3, product.getQuantity());
+	                stmt.setInt(4, product.getCid());
+	                stmt.executeUpdate();
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("Error in saveOrUpdateProduct: " + e.getMessage());
+	        }
+	    }
+
+    // Method to delete a product by ID
+    @Override
+    public void deleteProduct(int pid) {
+        String query = "DELETE FROM products WHERE pid = ?";
+
+        try {
+            stmt = conn.prepareStatement(query);
+            
+            // Set the product ID for deletion
+            stmt.setInt(1, pid);
+            
+            // Execute the update
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error in deleteProduct: " + e.getMessage());
+        } 
+    }
+
+    // Method to get all products
+    @Override
+    public List<ProductsModel> getAllProducts() {
+        List<ProductsModel> productsList = new ArrayList<>();
+        String query = "SELECT * FROM products";
+
+        try {
+            stmt = conn.prepareStatement(query);
+            rs = stmt.executeQuery();
+            
+            // Iterate over result set and map to Product objects
+            while (rs.next()) {
+            	ProductsModel product = new ProductsModel();
+                product.setPid(rs.getInt("pid"));
+                product.setName(rs.getString("name"));
+                product.setPrice(rs.getInt("price"));
+                product.setQuantity(rs.getInt("quantity"));
+                product.setCid(rs.getInt("cid"));
+
+                // Add the product to the list
+                productsList.add(product);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error in getAllProducts: " + e.getMessage());
+        } 
+
+        return productsList;
+    }
+
+    // Method to get a product by its ID
+    @Override
+    public ProductsModel getProductById(int pid) {
+    	ProductsModel product = null;
+        String query = "SELECT * FROM products WHERE pid = ?";
+
+        try {
+            stmt = conn.prepareStatement(query);
+            stmt.setInt(1, pid);
+            rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                product = new ProductsModel();
+                product.setPid(rs.getInt("pid"));
+                product.setName(rs.getString("name"));
+                product.setPrice(rs.getInt("price"));
+                product.setQuantity(rs.getInt("quantity"));
+                product.setCid(rs.getInt("cid"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error in getProductById: " + e.getMessage());
+        } 
+
+        return product;
+    }
+
+    
+    
+}

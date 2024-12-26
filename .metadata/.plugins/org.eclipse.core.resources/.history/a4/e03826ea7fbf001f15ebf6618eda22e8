@@ -1,0 +1,22 @@
+package org.project.repo;
+
+import java.util.List;
+
+
+
+public interface ProductsRepo {
+
+	
+	 // Method to create or update a product
+    void saveOrUpdateProduct(Products product);
+
+    // Method to delete a product
+    void deleteProduct(int pid);
+
+    // Method to get all products
+    List<Products> getAllProducts();
+
+    // Method to get a product by ID
+    Products getProductById(int pid);
+	
+}

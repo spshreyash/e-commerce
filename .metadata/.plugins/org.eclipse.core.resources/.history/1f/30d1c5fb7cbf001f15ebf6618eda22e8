@@ -1,0 +1,36 @@
+package org.project.services;
+
+import java.util.List;
+import org.project.models.Products;
+import org.project.repo.ProductsRepo;
+import org.project.repo.ProductsRepoImpl;
+
+public class ProductServiceImpl implements ProductService {
+
+    // Declare a repository object
+    ProductsRepo productRepo = new ProductsRepoImpl();
+
+    @Override
+    public void saveOrUpdateProduct(Products product) {
+        // Call the repository method to save or update the product
+        productRepo.saveOrUpdateProduct(product);
+    }
+
+    @Override
+    public void deleteProduct(int pid) {
+        // Call the repository method to delete the product by its ID
+        productRepo.deleteProduct(pid);
+    }
+
+    @Override
+    public List<Products> getAllProducts() {
+        // Call the repository method to get all products
+        return productRepo.getAllProducts();
+    }
+
+    @Override
+    public Products getProductById(int pid) {
+        // Call the repository method to get a product by its ID
+        return productRepo.getProductById(pid);
+    }
+}

@@ -1,0 +1,68 @@
+@Override
+public void saveOrUpdateProduct(ProductsModel product) {
+    String categoryQuery = "SELECT cid FROM productcategories WHERE name = ?";
+    String insertQuery = "INSERT INTO products (name, price, quantity, cid) VALUES (?, ?, ?, ?)";
+    String updateQuery = "UPDATE products SET name = ?, price = ?, quantity = ?, cid = ? WHERE pid = ?";
+    String selectQuery = "SELECT * FROM products WHERE pid = ?";
+
+    PreparedStatement categoryStmt = null;
+    PreparedStatement selectStmt = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+    ResultSet productRs = null;
+
+    try {
+        // Prepare the category query to fetch cid
+        categoryStmt = conn.prepareStatement(categoryQuery);
+        categoryStmt.setString(1, product.getCategory());
+        rs = categoryStmt.executeQuery();
+
+        if (rs.next()) {
+            // Category exists, get the category ID
+            int categoryId = rs.getInt("cid");
+            product.setCid(categoryId); // Set the fetched cid to the product model
+        } else {
+            System.out.println("Category does not exist.");
+            return; // Exit if the category doesn't exist
+        }
+
+        // Now check if the product exists
+        selectStmt = conn.prepareStatement(selectQuery);
+        selectStmt.setInt(1, product.getPid());
+        productRs = selectStmt.executeQuery();
+
+        if (productRs.next()) {
+            // Product exists, perform UPDATE
+            stmt = conn.prepareStatement(updateQuery);
+            stmt.setString(1, product.getName());
+            stmt.setInt(2, product.getPrice());
+            stmt.setInt(3, product.getQuantity());
+            stmt.setInt(4, product.getCid());
+            stmt.setInt(5, product.getPid());
+            stmt.executeUpdate();
+            System.out.println("Product updated successfully.");
+        } else {
+            // Product does not exist, perform INSERT
+            stmt = conn.prepareStatement(insertQuery);
+            stmt.setString(1, product.getName());
+            stmt.setInt(2, product.getPrice());
+            stmt.setInt(3, product.getQuantity());
+            stmt.setInt(4, product.getCid());
+            stmt.executeUpdate();
+            System.out.println("Product inserted successfully.");
+        }
+    } catch (SQLException e) {
+        System.out.println("Error in saveOrUpdateProduct: " + e.getMessage());
+    } finally {
+        // Close all resources manually in finally block
+        try {
+            if (rs != null) rs.close();
+            if (productRs != null) productRs.close();
+            if (categoryStmt != null) categoryStmt.close();
+            if (selectStmt != null) selectStmt.close();
+            if (stmt != null) stmt.close();
+        } catch (SQLException e) {
+            System.out.println("Error closing resources: " + e.getMessage());
+        }
+    }
+}

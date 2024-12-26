@@ -1,0 +1,51 @@
+package org.project.models;
+
+public class Products {
+
+//	mysql> desc products;
+//	+----------+--------------+------+-----+---------+----------------+
+//	| Field    | Type         | Null | Key | Default | Extra          |
+//	+----------+--------------+------+-----+---------+----------------+
+//	| pid      | int          | NO   | PRI | NULL    | auto_increment |
+//	| name     | varchar(200) | NO   |     | NULL    |                |
+//	| price    | int          | NO   |     | NULL    |                |
+//	| quantity | int          | NO   |     | NULL    |                |
+//	| cid      | int          | YES  | MUL | NULL    |                |
+//	+----------+--------------+------+-----+---------+----------------+
+	
+	  private int pid;
+	  private String name;
+	  private int price;
+	  private  int quantity;
+       private int cid;
+	public int getPid() {
+		return pid;
+	}
+	public void setPid(int pid) {
+		this.pid = pid;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	public int getCid() {
+		return cid;
+	}
+	public void setCid(int cid) {
+		this.cid = cid;
+	}	  
+}

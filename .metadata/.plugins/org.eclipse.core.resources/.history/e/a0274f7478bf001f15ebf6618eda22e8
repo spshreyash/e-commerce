@@ -1,0 +1,5 @@
+package org.project.repo;
+
+public class ProductsRepoImpl extends DBState implements ProductsRepo {
+
+}

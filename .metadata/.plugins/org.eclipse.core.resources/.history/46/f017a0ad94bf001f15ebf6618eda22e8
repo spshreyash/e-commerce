@@ -1,0 +1,269 @@
+package org.project.clientApp;
+
+import java.util.Scanner;
+import org.project.models.LoginModel;
+import org.project.services.LoginService;
+import org.project.services.LoginServiceImp;
+import org.project.models.ProductCatModel;
+import org.project.services.ProductCatService;
+import org.project.services.ProductCatServiceImpl;
+import org.project.models.ProductsModel;
+import org.project.services.ProductService;
+import org.project.services.ProductServiceImpl;
+import java.util.List;
+
+public class EcommerceMain {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        LoginService loginService = new LoginServiceImp(); // Using the interface type for dynamic polymorphism
+        LoginModel loginModel = new LoginModel();
+        ProductCatService productCatService = new ProductCatServiceImpl();
+        ProductService productService = new ProductServiceImpl(); // Product service
+        ProductCatModel productCatModel = new ProductCatModel();
+        boolean value = true;
+
+        while (value) {
+            System.out.println("Please choose an option:");
+            System.out.println("1. Login");
+            System.out.println("2. Check Product Category Availability");
+            System.out.println("3. Show All Product Categories");
+            System.out.println("4. Exit");
+            System.out.print("Enter choice: ");
+            int choice = sc.nextInt();
+            sc.nextLine(); // Consume leftover newline
+
+            switch (choice) {
+                case 1:
+                    // Login or Register
+                    System.out.println("Do you want to login or register?");
+                    System.out.println("1. Login");
+                    System.out.println("2. Register");
+                    System.out.print("Enter choice: ");
+                    int actionChoice = sc.nextInt();
+                    sc.nextLine(); // Consume leftover newline
+
+                    switch (actionChoice) {
+                        case 1:
+                            System.out.print("Enter email: ");
+                            String email = sc.nextLine();
+                            System.out.print("Enter password: ");
+                            String password = sc.nextLine();
+
+                            loginModel.setUemail(email);
+                            loginModel.setPassword(password);
+
+                            boolean isUser = loginService.isUser(loginModel);
+
+                            if (isUser) {
+                                System.out.println("Login successful");
+
+                                // Check user type
+                                if ("admin".equalsIgnoreCase(loginModel.getUsertype())) {
+                                    System.out.println("Welcome admin! You have full access.");
+                                    boolean adminActions = true;
+
+                                    while (adminActions) {
+                                        System.out.println("1. Add Product");
+                                        System.out.println("2. Update Product Price and Quantity");
+                                        System.out.println("3. View Products");
+                                        System.out.println("4. Logout");
+                                        System.out.print("Enter your choice: ");
+                                        int adminChoiceOption = sc.nextInt();
+                                        sc.nextLine(); // Consume leftover newline
+
+                                        switch (adminChoiceOption) {
+                                            case 1:
+                                                System.out.print("Enter product name: ");
+                                                String productName = sc.nextLine();
+
+                                                System.out.print("Enter product category: ");
+                                                int  category = sc.nextInt();
+
+                                                System.out.print("Enter product price: ");
+                                                int price = sc.nextInt();
+
+                                                System.out.print("Enter product quantity: ");
+                                                int quantity = sc.nextInt();
+
+                                                ProductsModel product = new ProductsModel();
+                                                product.setName(productName);
+                                                product.setCategory(category);
+                                                product.setPrice(price);
+                                                product.setQuantity(quantity);
+
+                                                productService.saveOrUpdateProduct(product);
+                                                System.out.println("Product added successfully.");
+                                                break;
+
+                                            case 2:
+                                                System.out.print("Enter product ID to update: ");
+                                                int productId = sc.nextInt();
+                                                System.out.print("Enter new price: ");
+                                                int newPrice = sc.nextInt();
+                                                System.out.print("Enter new quantity: ");
+                                                int newQuantity = sc.nextInt();
+
+                                                productService.updateProductPriceAndQuantity(productId, newPrice, newQuantity);
+                                                System.out.println("Product updated successfully.");
+                                                break;
+
+                                            case 3:
+                                                List<ProductsModel> allProducts = productService.getAllProducts();
+                                                if (allProducts.isEmpty()) {
+                                                    System.out.println("No products available.");
+                                                } else {
+                                                    System.out.println("All Products:");
+                                                    for (ProductsModel p : allProducts) {
+                                                        System.out.println(p.getName() + " | " + p.getCategory() + " | Price: " + p.getPrice() + " | Quantity: " + p.getQuantity());
+                                                    }
+                                                }
+                                                break;
+
+                                            case 4:
+                                                adminActions = false;
+                                                break;
+
+                                            default:
+                                                System.out.println("Invalid choice.");
+                                        }
+                                    }
+
+                                } else {
+                                    System.out.println("Welcome " + loginModel.getUname() + "! You have limited access.");
+                                    boolean userActions = true;
+
+                                    while (userActions) {
+                                        System.out.println("1. View Products");
+                                        System.out.println("2. Filter Products by Price");
+                                        System.out.println("3. Filter Products by Quantity");
+                                        System.out.println("4. Logout");
+                                        System.out.print("Enter your choice: ");
+                                        int userChoice = sc.nextInt();
+                                        sc.nextLine(); // Consume leftover newline
+
+                                        switch (userChoice) {
+                                            case 1:
+                                                List<ProductsModel> products = productService.getAllProducts();
+                                                if (products.isEmpty()) {
+                                                    System.out.println("No products available.");
+                                                } else {
+                                                    System.out.println("All Products:");
+                                                    for (ProductsModel p : products) {
+                                                        System.out.println(p.getName() + " | " + p.getCategory() + " | Price: " + p.getPrice() + " | Quantity: " + p.getQuantity());
+                                                    }
+                                                }
+                                                break;
+
+                                            case 2:
+                                                System.out.print("Enter max price to filter by: ");
+                                                int maxPrice = sc.nextInt();
+                                                List<ProductsModel> productsByPrice = productService.getProductsByPrice(maxPrice);
+                                                if (productsByPrice.isEmpty()) {
+                                                    System.out.println("No products found within the specified price range.");
+                                                } else {
+                                                    System.out.println("Products within your price range:");
+                                                    for (ProductsModel p : productsByPrice) {
+                                                        System.out.println(p.getName() + " | " + p.getCategory() + " | Price: " + p.getPrice() + " | Quantity: " + p.getQuantity());
+                                                    }
+                                                }
+                                                break;
+
+                                            case 3:
+                                                System.out.print("Enter min quantity to filter by: ");
+                                                int minQuantity = sc.nextInt();
+                                                List<ProductsModel> productsByQuantity = productService.getProductsByQuantity(minQuantity);
+                                                if (productsByQuantity.isEmpty()) {
+                                                    System.out.println("No products found with the specified quantity.");
+                                                } else {
+                                                    System.out.println("Products with sufficient quantity:");
+                                                    for (ProductsModel p : productsByQuantity) {
+                                                        System.out.println(p.getName() + " | " + p.getCategory() + " | Price: " + p.getPrice() + " | Quantity: " + p.getQuantity());
+                                                    }
+                                                }
+                                                break;
+
+                                            case 4:
+                                                userActions = false;
+                                                break;
+
+                                            default:
+                                                System.out.println("Invalid choice.");
+                                        }
+                                    }
+                                }
+                            } else {
+                                System.out.println("Invalid login details.");
+                            }
+                            break;
+
+                        case 2:
+                            System.out.print("Enter your name: ");
+                            String name = sc.nextLine();
+                            System.out.print("Enter your email: ");
+                            String regEmail = sc.nextLine();
+                            System.out.print("Enter your password: ");
+                            String regPassword = sc.nextLine();
+
+                            System.out.println("Please choose your usertype:");
+                            System.out.println("1. Admin");
+                            System.out.println("2. User");
+                            System.out.print("Enter choice: ");
+                            int usertypeChoice = sc.nextInt();
+                            sc.nextLine(); // Consume leftover newline
+                            String usertype = (usertypeChoice == 1) ? "admin" : "user";
+
+                            loginModel.setUname(name);
+                            loginModel.setUemail(regEmail);
+                            loginModel.setPassword(regPassword);
+                            loginModel.setUsertype(usertype);
+
+                            boolean registrationSuccessful = loginService.registerUser(loginModel);
+                            if (registrationSuccessful) {
+                                System.out.println("Registration successful!");
+                            } else {
+                                System.out.println("Registration failed. Please try again.");
+                            }
+                            break;
+
+                        default:
+                            System.out.println("Invalid choice. Please select a valid option.");
+                    }
+                    break;
+
+                case 2:
+                    System.out.print("Enter product category name to check availability: ");
+                    String categoryName = sc.nextLine();
+                    productCatModel.setName(categoryName);
+
+                    boolean isCategoryAvailable = productCatService.isProductCat(productCatModel);
+                    if (isCategoryAvailable) {
+                        System.out.println("The product category \"" + categoryName + "\" is available.");
+                    } else {
+                        System.out.println("The product category \"" + categoryName + "\" is not available.");
+                    }
+                    break;
+
+                case 3:
+                    List<ProductCatModel> allCategories = productCatService.getAllProductCats();
+                    if (allCategories.isEmpty()) {
+                        System.out.println("No product categories are available.");
+                    } else {
+                        System.out.println("All product categories:");
+                        for (ProductCatModel category : allCategories) {
+                            System.out.println(category.getName());
+                        }
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Exiting the application...");
+                    value = false;
+                    break;
+
+                default:
+                    System.out.println("Invalid choice...");
+            }
+        }
+    }
+}

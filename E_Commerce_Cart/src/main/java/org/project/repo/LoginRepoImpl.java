@@ -15,31 +15,36 @@ import org.project.models.LoginModel;
 
 public class LoginRepoImpl extends DBState implements LoginRepo {
 
-    @Override
-    public boolean isUser(LoginModel login) {
-        String query = " select  * from users where uemail = ? and  password = ?";
+	@Override
+	public boolean isUser(LoginModel login) {
+	    String query = "SELECT * FROM users WHERE uemail = ? AND password = ?";
 
-        try {
-            // Create a new PreparedStatement for the specific query
-        	
-            stmt = conn.prepareStatement(query);
+	    try {
+	        // Create a PreparedStatement for the query
+	        stmt = conn.prepareStatement(query);
 
-            // Set the parameters for the query
-            
-            
-            stmt.setString(1, login.getUemail());
-            stmt.setString(2, login.getPassword());
+	        // Set the query parameters
+	        stmt.setString(1, login.getUemail());
+	        stmt.setString(2, login.getPassword());
 
-            // Execute the query and check if a user exists
-            rs = stmt.executeQuery();
-            return rs.next(); 
-            // If a result exists, return true
+	        // Execute the query
+	        rs = stmt.executeQuery();
 
-        } catch (SQLException ex) {
-            System.out.println("Error in isUser: " + ex.getMessage());
-            return false;
-        }
-    }
+	        if (rs.next()) {
+	            // Populate the login model with additional details
+	            login.setUid(rs.getInt("uid"));
+	            login.setUname(rs.getString("uname"));
+	            login.setUsertype(rs.getString("usertype"));
+
+	            return true; // User exists
+	        }
+
+	    } catch (SQLException ex) {
+	        System.out.println("Error in isUser: " + ex.getMessage());
+	    }
+	    return false; // User does not exist or an error occurred
+	}
+
 
 	
 	@Override
